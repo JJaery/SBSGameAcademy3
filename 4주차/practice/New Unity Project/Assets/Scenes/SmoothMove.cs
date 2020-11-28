@@ -4,24 +4,17 @@ using UnityEngine;
 
 public class SmoothMove : MonoBehaviour
 {
-    private void OnEnable()
+    float curTime = 0;
+    private void Update()
     {
-        //StartCoroutine(CoMove());
-        Move();
-    }
-
-
-    IEnumerator CoMove()
-    {
-        int i = 0;
-
-        while (i++ < 10)
+        if (curTime >= 1f)
         {
-            transform.position += Vector3.right;
-            yield return null;
+            Move();
+            curTime = 0;
         }
+        else
+            curTime += Time.deltaTime;
     }
-
     void Move()
     {
         int i = 0;
