@@ -133,6 +133,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 450168, guid: b6ed95875921a1f4f9c6f17b9f812b11, type: 3}
   m_PrefabInstance: {fileID: 1196226469}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &175153950
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 175153952}
+  - component: {fileID: 175153951}
+  m_Layer: 0
+  m_Name: Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &175153951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175153950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac471040f69695c408273a9538d7a51c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetText: {fileID: 209715422}
+--- !u!4 &175153952
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175153950}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 420.19778, y: 381.61234, z: -67.32342}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &209715420
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,7 +349,6 @@ GameObject:
   m_Component:
   - component: {fileID: 527114968}
   - component: {fileID: 527114967}
-  - component: {fileID: 527114966}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -313,14 +356,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &527114966
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 527114965}
-  m_Enabled: 1
 --- !u!20 &527114967
 Camera:
   m_ObjectHideFlags: 0
