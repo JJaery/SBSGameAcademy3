@@ -10,6 +10,8 @@ public class Monster : MonoBehaviour
     private int _waypointIndex = 0;
     private float _moveSpeed = 1.5f;
 
+    private int _hp = 100;
+
     private void Awake()
     {
         _curWayPoint = SpawnManager.Instance.wayPoints[_waypointIndex];
@@ -20,7 +22,7 @@ public class Monster : MonoBehaviour
     {
         this.transform.position = Vector3.Lerp(_curWayPoint.position, _targetWayPoint.position, _progress);
         _progress += (Time.deltaTime * 0.12f) * _moveSpeed;
-        if(_progress >= 1f)
+        if (_progress >= 1f)
         {
             ChangeWayPoints();
             _progress = 0;
@@ -50,4 +52,17 @@ public class Monster : MonoBehaviour
         }
     }
 
+    public void OnHit(Missile missile)
+    {
+        _hp -= 10;
+        if(_hp <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Destroy(this.gameObject);
+    }
 }

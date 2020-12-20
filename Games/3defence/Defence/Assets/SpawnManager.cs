@@ -15,7 +15,6 @@ public class SpawnManager : MonoBehaviour
     }
     private static SpawnManager _instance;
 
-
     public Transform[] wayPoints;
     public GameObject currentSpawnTarget;
     public float spawnRate = 1f;
