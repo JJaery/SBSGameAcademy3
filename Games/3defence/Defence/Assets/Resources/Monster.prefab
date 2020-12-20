@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5116592097964168841}
   - component: {fileID: 2003568801188570702}
-  m_Layer: 0
+  - component: {fileID: 5667734298008907358}
+  m_Layer: 8
   m_Name: Monster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,6 +45,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b0bf20c533c54489414784325d8bb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &5667734298008907358
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118143039701474808}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.32
+  m_Center: {x: 0, y: 0.48, z: 0}
 --- !u!1 &6275974973672107642
 GameObject:
   m_ObjectHideFlags: 0
@@ -55,8 +69,7 @@ GameObject:
   - component: {fileID: 7346497383155290011}
   - component: {fileID: 4659940780519890274}
   - component: {fileID: 1480822978363709370}
-  - component: {fileID: 3121546692262996904}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,17 +139,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &3121546692262996904
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6275974973672107642}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
