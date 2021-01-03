@@ -55,6 +55,7 @@ public class SelectObject : MonoBehaviour
                     GameManager.Instance.chessBoard.MoveUnit(Unit.SelectedUnit.gameObject, script.curLine, script.curCellNum);
                     Unit.SelectedUnit.isFirstMove = false;
                     Unit.SelectedUnit.DeSelectUnit();
+                    //체크 확인
                     GameManager.Instance.CheckKing();
                     GameManager.Instance.SwitchTurn();
                 }
@@ -91,6 +92,7 @@ public class SelectObject : MonoBehaviour
                     GameManager.Instance.chessBoard.MoveUnit(Unit.SelectedUnit.gameObject, script.curLine, script.curCellNum);
                     Unit.SelectedUnit.isFirstMove = false;
                     Unit.SelectedUnit.DeSelectUnit();
+                    //체크확인
                     GameManager.Instance.CheckKing();
                     GameManager.Instance.SwitchTurn();
                     Destroy(script.gameObject);

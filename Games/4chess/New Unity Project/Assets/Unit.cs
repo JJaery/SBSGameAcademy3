@@ -108,80 +108,84 @@ public class Unit : MonoBehaviour
         MovabledUnits.Clear();
     }
 
-    public void MakeMovableUnits()
+    public void MakeMovableUnits(List<Unit> killableUnitList = null)
     {
         switch(unitType)
         {
             case UnitType.Pawn:
                 if(playerType == PlayerType.White)
                 {
-                    CheckKillableEnemies(curLine + 1, curCellNum + 1);
-                    CheckKillableEnemies(curLine + 1, curCellNum - 1);
-                    MakeMovableUnit(curLine + 1, curCellNum);
+                    CheckKillableEnemies(curLine + 1, curCellNum + 1, killableUnitList);
+                    CheckKillableEnemies(curLine + 1, curCellNum - 1, killableUnitList);
+                    MakeMovableUnit(curLine + 1, curCellNum, killableUnitList);
                     if(isFirstMove == true)
                     {
-                        MakeMovableUnit(curLine + 2, curCellNum);
+                        MakeMovableUnit(curLine + 2, curCellNum, killableUnitList);
                     }
                 }
                 else if(playerType == PlayerType.Black)
                 {
-                    CheckKillableEnemies(curLine - 1, curCellNum + 1);
-                    CheckKillableEnemies(curLine - 1, curCellNum - 1);
-                    MakeMovableUnit(curLine - 1, curCellNum);
+                    CheckKillableEnemies(curLine - 1, curCellNum + 1, killableUnitList);
+                    CheckKillableEnemies(curLine - 1, curCellNum - 1, killableUnitList);
+                    MakeMovableUnit(curLine - 1, curCellNum, killableUnitList);
                     if (isFirstMove == true)
                     {
-                        MakeMovableUnit(curLine - 2, curCellNum);
+                        MakeMovableUnit(curLine - 2, curCellNum, killableUnitList);
                     }
                 }
                 break;
             case UnitType.Knight:
-                MakeMovableUnit(curLine + 2, curCellNum - 1);
-                MakeMovableUnit(curLine + 2, curCellNum + 1);
+                {
+                    MakeMovableUnit(curLine + 2, curCellNum - 1, killableUnitList);
+                    MakeMovableUnit(curLine + 2, curCellNum + 1, killableUnitList);
 
-                MakeMovableUnit(curLine - 2, curCellNum - 1);
-                MakeMovableUnit(curLine - 2, curCellNum + 1);
+                    MakeMovableUnit(curLine - 2, curCellNum - 1, killableUnitList);
+                    MakeMovableUnit(curLine - 2, curCellNum + 1, killableUnitList);
 
-                MakeMovableUnit(curLine + 1, curCellNum - 2);
-                MakeMovableUnit(curLine - 1, curCellNum - 2);
+                    MakeMovableUnit(curLine + 1, curCellNum - 2, killableUnitList);
+                    MakeMovableUnit(curLine - 1, curCellNum - 2, killableUnitList);
 
-                MakeMovableUnit(curLine + 1, curCellNum + 2);
-                MakeMovableUnit(curLine - 1, curCellNum + 2);
-                break;
+                    MakeMovableUnit(curLine + 1, curCellNum + 2, killableUnitList);
+                    MakeMovableUnit(curLine - 1, curCellNum + 2, killableUnitList);
+                    break;
+                }
             case UnitType.King:
-                MakeMovableUnit(curLine + 1, curCellNum + 1);
-                MakeMovableUnit(curLine + 1, curCellNum);
-                MakeMovableUnit(curLine + 1, curCellNum - 1);
+                {
+                    MakeMovableUnit(curLine + 1, curCellNum + 1, killableUnitList);
+                    MakeMovableUnit(curLine + 1, curCellNum, killableUnitList);
+                    MakeMovableUnit(curLine + 1, curCellNum - 1, killableUnitList);
 
-                MakeMovableUnit(curLine, curCellNum + 1);
-                MakeMovableUnit(curLine, curCellNum - 1);
+                    MakeMovableUnit(curLine, curCellNum + 1, killableUnitList);
+                    MakeMovableUnit(curLine, curCellNum - 1, killableUnitList);
 
-                MakeMovableUnit(curLine - 1, curCellNum + 1);
-                MakeMovableUnit(curLine - 1, curCellNum);
-                MakeMovableUnit(curLine - 1, curCellNum - 1);
-                break;
+                    MakeMovableUnit(curLine - 1, curCellNum + 1, killableUnitList);
+                    MakeMovableUnit(curLine - 1, curCellNum, killableUnitList);
+                    MakeMovableUnit(curLine - 1, curCellNum - 1, killableUnitList);
+                    break;
+                }
             case UnitType.Rock:
                 //윗 방향 직진
                 for (int i = curLine + 1; GameManager.Instance.chessBoard.IsInBoard(i, curCellNum); i++)
                 {
-                    if (MakeMovableUnit(i, curCellNum) == false)
+                    if (MakeMovableUnit(i, curCellNum, killableUnitList) == false)
                         break;
                 }
                 //아랫 방향 직진
                 for (int i = curLine - 1; GameManager.Instance.chessBoard.IsInBoard(i, curCellNum); i--)
                 {
-                    if(MakeMovableUnit(i, curCellNum) == false)
+                    if(MakeMovableUnit(i, curCellNum, killableUnitList) == false)
                         break;
                 }
                 //오른쪽 방향 직진
                 for (int i = curCellNum + 1; GameManager.Instance.chessBoard.IsInBoard(curLine, i); i++)
                 {
-                    if(MakeMovableUnit(curLine, i) == false)
+                    if(MakeMovableUnit(curLine, i, killableUnitList) == false)
                         break;
                 }
                 //왼쪽 방향 직진
                 for (int i = curCellNum - 1; GameManager.Instance.chessBoard.IsInBoard(curLine, i); i--)
                 {
-                    if(MakeMovableUnit(curLine, i) == false)
+                    if(MakeMovableUnit(curLine, i, killableUnitList) == false)
                         break;
                 }
                 break;
@@ -189,25 +193,25 @@ public class Unit : MonoBehaviour
                 //대각선 오른쪽위 방향
                 for (int i = curLine + 1, j = curCellNum + 1; GameManager.Instance.chessBoard.IsInBoard(i, j); i++, j++)
                 {
-                    if(MakeMovableUnit(i, j) == false)
+                    if(MakeMovableUnit(i, j, killableUnitList) == false)
                         break;
                 }
                 //대각선 왼쪽위 방향
                 for (int i = curLine + 1, j = curCellNum - 1; GameManager.Instance.chessBoard.IsInBoard(i, j); i++, j--)
                 {
-                    if(MakeMovableUnit(i, j) == false)
+                    if(MakeMovableUnit(i, j, killableUnitList) == false)
                         break;
                 }
                 //대각선 오른쪽 아래 방향
                 for (int i = curLine - 1, j = curCellNum + 1; GameManager.Instance.chessBoard.IsInBoard(i, j); i--, j++)
                 {
-                    if(MakeMovableUnit(i, j) == false)
+                    if(MakeMovableUnit(i, j, killableUnitList) == false)
                         break;
                 }
                 //대각선 왼쪽 아래 방향
                 for (int i = curLine - 1, j = curCellNum - 1; GameManager.Instance.chessBoard.IsInBoard(i, j); i--, j--)
                 {
-                    if(MakeMovableUnit(i, j) == false)
+                    if(MakeMovableUnit(i, j, killableUnitList) == false)
                         break;
                 }
                 break;
@@ -216,49 +220,49 @@ public class Unit : MonoBehaviour
                 //윗 방향 직진
                 for (int i = curLine + 1; GameManager.Instance.chessBoard.IsInBoard(i, curCellNum); i++)
                 {
-                    if (MakeMovableUnit(i, curCellNum) == false)
+                    if (MakeMovableUnit(i, curCellNum, killableUnitList) == false)
                         break;
                 }
                 //아랫 방향 직진
                 for (int i = curLine - 1; GameManager.Instance.chessBoard.IsInBoard(i, curCellNum); i--)
                 {
-                    if (MakeMovableUnit(i, curCellNum) == false)
+                    if (MakeMovableUnit(i, curCellNum, killableUnitList) == false)
                         break;
                 }
                 //오른쪽 방향 직진
                 for (int i = curCellNum + 1; GameManager.Instance.chessBoard.IsInBoard(curLine, i); i++)
                 {
-                    if (MakeMovableUnit(curLine, i) == false)
+                    if (MakeMovableUnit(curLine, i, killableUnitList) == false)
                         break;
                 }
                 //왼쪽 방향 직진
                 for (int i = curCellNum - 1; GameManager.Instance.chessBoard.IsInBoard(curLine, i); i--)
                 {
-                    if (MakeMovableUnit(curLine, i) == false)
+                    if (MakeMovableUnit(curLine, i, killableUnitList) == false)
                         break;
                 }
                 //대각선 오른쪽위 방향
                 for (int i = curLine + 1, j = curCellNum + 1; GameManager.Instance.chessBoard.IsInBoard(i, j); i++, j++)
                 {
-                    if (MakeMovableUnit(i, j) == false)
+                    if (MakeMovableUnit(i, j, killableUnitList) == false)
                         break;
                 }
                 //대각선 왼쪽위 방향
                 for (int i = curLine + 1, j = curCellNum - 1; GameManager.Instance.chessBoard.IsInBoard(i, j); i++, j--)
                 {
-                    if (MakeMovableUnit(i, j) == false)
+                    if (MakeMovableUnit(i, j, killableUnitList) == false)
                         break;
                 }
                 //대각선 오른쪽 아래 방향
                 for (int i = curLine - 1, j = curCellNum + 1; GameManager.Instance.chessBoard.IsInBoard(i, j); i--, j++)
                 {
-                    if (MakeMovableUnit(i, j) == false)
+                    if (MakeMovableUnit(i, j, killableUnitList) == false)
                         break;
                 }
                 //대각선 왼쪽 아래 방향
                 for (int i = curLine - 1, j = curCellNum - 1; GameManager.Instance.chessBoard.IsInBoard(i, j); i--, j--)
                 {
-                    if (MakeMovableUnit(i, j) == false)
+                    if (MakeMovableUnit(i, j, killableUnitList) == false)
                         break;
                 }
                 #endregion
@@ -266,17 +270,19 @@ public class Unit : MonoBehaviour
         }
     }
 
-    private void CheckKillableEnemies(int targetLine, int targetCellNum)
+    private void CheckKillableEnemies(int targetLine, int targetCellNum, List<Unit> killableUnitList)
     {
         if (GameManager.Instance.chessBoard.IsInEnemy(targetLine, targetCellNum) == true)
         {
             Unit enemyScript = GameManager.Instance.chessBoard.lines[targetLine].cells[targetCellNum].GetComponentInChildren<Unit>();
-            enemyScript.SetKillable();
+            if (killableUnitList != null)
+                killableUnitList.Add(enemyScript);
+            else
+                enemyScript.SetKillable();
         }
     }
 
-
-    private bool MakeMovableUnit(int targetLine,int targetCellNum)
+    private bool MakeMovableUnit(int targetLine,int targetCellNum, List<Unit> killableUnitList)
     {
         if(GameManager.Instance.chessBoard.IsInBoard(targetLine,targetCellNum) == false ||
             GameManager.Instance.chessBoard.IsInAlly(targetLine,targetCellNum) == true)
@@ -289,15 +295,36 @@ public class Unit : MonoBehaviour
             if (unitType != UnitType.Pawn)
             {
                 Unit enemyScript = GameManager.Instance.chessBoard.lines[targetLine].cells[targetCellNum].GetComponentInChildren<Unit>();
-                enemyScript.SetKillable();
+                if(killableUnitList != null)
+                    killableUnitList.Add(enemyScript);
+                else
+                    enemyScript.SetKillable();
             }
             return false;
-        }        
+        }
 
-        GameObject movable = Instantiate(gameObject);
-        GameManager.Instance.chessBoard.MoveUnit(movable, targetLine, targetCellNum);
-        Unit script = movable.GetComponent<Unit>();
-        script.SetPlayer(PlayerType.Movable);
+        if (killableUnitList == null)
+        {
+            GameObject movable = Instantiate(gameObject);
+            GameManager.Instance.chessBoard.MoveUnit(movable, targetLine, targetCellNum);
+            Unit script = movable.GetComponent<Unit>();
+            script.SetPlayer(PlayerType.Movable);
+        }
         return true;
+    }
+
+    public bool IsCheck()
+    {
+        List<Unit> killableList = new List<Unit>();
+        MakeMovableUnits(killableList);
+        if (killableList.Count != 0)
+        {
+            Debug.Log($"Player : {playerType} / UnitType : {unitType}[{curLine},{curCellNum}] / killableCount - {killableList.Count}");
+            foreach(Unit killableUnit in killableList)
+            {
+                Debug.Log($"    {killableUnit.unitType} [{killableUnit.curLine},{killableUnit.curCellNum}]");
+            }
+        }
+        return false;
     }
 }

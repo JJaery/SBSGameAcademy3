@@ -172,11 +172,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 체크 확인
-    /// </summary>
     public void CheckKing()
     {
+        List<Unit> allyList = (currentTurn == Unit.PlayerType.White ? WhiteUnits : BlackUnits);
+
+        bool isCheck = false;
         
+        foreach(Unit ally in allyList)
+        {
+            ally.IsCheck();
+            //isCheck = (내가 상대 킹을 체크했는지);
+        }
     }
 }

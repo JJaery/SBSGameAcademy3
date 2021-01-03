@@ -81,21 +81,21 @@ public class ChessBoard : MonoBehaviour
         if (IsInBoard(line, cellNum) == false)
             return false;
 
-        Unit targetScript = lines[line].cells[cellNum].GetComponentInChildren<Unit>();
+        Unit[] targetScriptArray = lines[line].cells[cellNum].GetComponentsInChildren<Unit>();
 
-        if (targetScript == null)
+        if (targetScriptArray == null || targetScriptArray.Length == 0)
         {
             return false;
         }
 
-        if(targetScript.playerType == GameManager.Instance.currentTurn)
+        foreach (Unit targetScript in targetScriptArray)
         {
-            return true;
+            if (targetScript.playerType == GameManager.Instance.currentTurn)
+            {
+                return true;
+            }
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public void MoveUnit(GameObject target, int line, int cellNum)
