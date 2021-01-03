@@ -16,7 +16,6 @@ public class SelectObject : MonoBehaviour
 
             if(hit.transform != null) // 부딪쳤다.
             {
-                Debug.Log(hit.transform.gameObject.name);
                 Unit script = hit.transform.GetComponent<Unit>();
 
                 if(script.playerType == GameManager.Instance.currentTurn)
@@ -25,10 +24,76 @@ public class SelectObject : MonoBehaviour
                 }
                 else if(script.playerType == Unit.PlayerType.Movable)
                 {
+                    if(Unit.SelectedUnit.unitType == Unit.UnitType.Pawn)
+                    {
+                        if(GameManager.Instance.currentTurn == Unit.PlayerType.White)
+                        {
+                            //맨 윗라인
+                            if(script.curLine == 7)
+                            {
+                                Destroy(Unit.SelectedUnit.gameObject);
+                                GameObject queen = Instantiate(GameManager.Instance.queenPrefab);
+                                Unit targetScript = queen.GetComponent<Unit>();
+                                targetScript.SetPlayer(GameManager.Instance.currentTurn);
+                                Unit.SelectedUnit = targetScript;
+                            }
+                        }
+                        else if(GameManager.Instance.currentTurn == Unit.PlayerType.Black)
+                        {
+                            //맨 아랫 라인
+                            if (script.curLine == 0)
+                            {
+                                Destroy(Unit.SelectedUnit.gameObject);
+                                GameObject queen = Instantiate(GameManager.Instance.queenPrefab);
+                                Unit targetScript = queen.GetComponent<Unit>();
+                                targetScript.SetPlayer(GameManager.Instance.currentTurn);
+                                Unit.SelectedUnit = targetScript;
+                            }
+                        }
+                    }
                     //기물 이동
                     GameManager.Instance.chessBoard.MoveUnit(Unit.SelectedUnit.gameObject, script.curLine, script.curCellNum);
                     Unit.SelectedUnit.isFirstMove = false;
                     Unit.SelectedUnit.DeSelectUnit();
+                    GameManager.Instance.CheckKing();
+                    GameManager.Instance.SwitchTurn();
+                }
+                else if(script.isKillable)
+                {
+                    if (Unit.SelectedUnit.unitType == Unit.UnitType.Pawn)
+                    {
+                        if (GameManager.Instance.currentTurn == Unit.PlayerType.White)
+                        {
+                            //맨 윗라인
+                            if (script.curLine == 7)
+                            {
+                                Destroy(Unit.SelectedUnit.gameObject);
+                                GameObject queen = Instantiate(GameManager.Instance.queenPrefab);
+                                Unit targetScript = queen.GetComponent<Unit>();
+                                targetScript.SetPlayer(GameManager.Instance.currentTurn);
+                                Unit.SelectedUnit = targetScript;
+                            }
+                        }
+                        else if (GameManager.Instance.currentTurn == Unit.PlayerType.Black)
+                        {
+                            //맨 아랫 라인
+                            if (script.curLine == 0)
+                            {
+                                Destroy(Unit.SelectedUnit.gameObject);
+                                GameObject queen = Instantiate(GameManager.Instance.queenPrefab);
+                                Unit targetScript = queen.GetComponent<Unit>();
+                                targetScript.SetPlayer(GameManager.Instance.currentTurn);
+                                Unit.SelectedUnit = targetScript;
+                            }
+                        }
+                    }
+                    //기물 이동
+                    GameManager.Instance.chessBoard.MoveUnit(Unit.SelectedUnit.gameObject, script.curLine, script.curCellNum);
+                    Unit.SelectedUnit.isFirstMove = false;
+                    Unit.SelectedUnit.DeSelectUnit();
+                    GameManager.Instance.CheckKing();
+                    GameManager.Instance.SwitchTurn();
+                    Destroy(script.gameObject);
                 }
                 else
                 {

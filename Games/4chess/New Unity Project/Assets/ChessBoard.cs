@@ -32,17 +32,76 @@ public class ChessBoard : MonoBehaviour
             index++;
         }
     }
+    
+    /// <summary>
+    /// 해당 줄의 몇번째 칸이 체스보드 안에 있는지 Return시켜주는 메소드
+    /// </summary>
+    /// <param name="line"></param>
+    /// <param name="cellNum"></param>
+    /// <returns></returns>
+    public bool IsInBoard(int line,int cellNum)
+    {
+        if (line < 0 || line >= lines.Count)
+        {
+            return false;
+        }
+        if (cellNum < 0 || cellNum >= lines[line].cells.Count)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public bool IsInEnemy(int line,int cellNum)
+    {
+        if (IsInBoard(line, cellNum) == false)
+            return false;
+
+        Unit targetScript = lines[line].cells[cellNum].GetComponentInChildren<Unit>();
+
+        if (targetScript == null)
+        {
+            return false;
+        }
+
+        if (targetScript.playerType == GameManager.Instance.currentTurn
+            || targetScript.playerType == Unit.PlayerType.Movable
+            || targetScript.playerType == Unit.PlayerType.None)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public bool IsInAlly(int line, int cellNum)
+    {
+        if (IsInBoard(line, cellNum) == false)
+            return false;
+
+        Unit targetScript = lines[line].cells[cellNum].GetComponentInChildren<Unit>();
+
+        if (targetScript == null)
+        {
+            return false;
+        }
+
+        if(targetScript.playerType == GameManager.Instance.currentTurn)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     public void MoveUnit(GameObject target, int line, int cellNum)
     {
-        if(line < 0 || line >= lines.Count)
-        {
+        if (IsInBoard(line, cellNum) == false)
             return;
-        }
-        if(cellNum < 0 || cellNum >= lines[line].cells.Count)
-        {
-            return;
-        }
 
         target.transform.parent = lines[line].cells[cellNum];
         target.transform.localPosition = Vector3.zero;

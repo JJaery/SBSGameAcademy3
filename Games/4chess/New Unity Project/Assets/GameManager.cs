@@ -18,6 +18,16 @@ public class GameManager : MonoBehaviour
     }
     private static GameManager _instance = null;
 
+    /// <summary>
+    /// 모든 검정 플레이어 유닛들
+    /// </summary>
+    public static List<Unit> BlackUnits = new List<Unit>();
+
+    /// <summary>
+    /// 모든 흰색 플레이어 유닛들
+    /// </summary>
+    public static List<Unit> WhiteUnits = new List<Unit>();
+
     #region 프리팹들
     [Header("프리팹들")]
     public GameObject pawnPrefab;
@@ -148,5 +158,25 @@ public class GameManager : MonoBehaviour
             script.SetPlayer(Unit.PlayerType.Black);
             chessBoard.MoveUnit(king1, 7, 4);
         }
+    }
+
+    public void SwitchTurn()
+    {
+        if(currentTurn == Unit.PlayerType.White)
+        {
+            currentTurn = Unit.PlayerType.Black;
+        }
+        else if( currentTurn == Unit.PlayerType.Black)
+        {
+            currentTurn = Unit.PlayerType.White;
+        }
+    }
+
+    /// <summary>
+    /// 체크 확인
+    /// </summary>
+    public void CheckKing()
+    {
+        
     }
 }
