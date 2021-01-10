@@ -103,7 +103,7 @@ public class Unit : MonoBehaviour
     {
         foreach (Unit script in MovabledUnits)
         {
-            Destroy(script.gameObject);
+            DestroyImmediate(script.gameObject);
         }
         MovabledUnits.Clear();
     }
@@ -276,9 +276,23 @@ public class Unit : MonoBehaviour
         {
             Unit enemyScript = GameManager.Instance.chessBoard.lines[targetLine].cells[targetCellNum].GetComponentInChildren<Unit>();
             if (killableUnitList != null)
+            {
                 killableUnitList.Add(enemyScript);
+            }
             else
-                enemyScript.SetKillable();
+            {
+                if (GameManager.Instance.isCheck == true || this.unitType == UnitType.King)
+                {
+                    if (GameManager.Instance.SimulateCheck(this, targetLine, targetCellNum) == false)//체크회피성공
+                    {
+                        enemyScript.SetKillable();
+                    }
+                }
+                else
+                {
+                    enemyScript.SetKillable();
+                }
+            }
         }
     }
 
@@ -294,37 +308,61 @@ public class Unit : MonoBehaviour
         {
             if (unitType != UnitType.Pawn)
             {
-                Unit enemyScript = GameManager.Instance.chessBoard.lines[targetLine].cells[targetCellNum].GetComponentInChildren<Unit>();
-                if(killableUnitList != null)
-                    killableUnitList.Add(enemyScript);
-                else
-                    enemyScript.SetKillable();
+                CheckKillableEnemies(targetLine, targetCellNum, killableUnitList);
             }
             return false;
         }
 
         if (killableUnitList == null)
         {
-            GameObject movable = Instantiate(gameObject);
-            GameManager.Instance.chessBoard.MoveUnit(movable, targetLine, targetCellNum);
-            Unit script = movable.GetComponent<Unit>();
-            script.SetPlayer(PlayerType.Movable);
+            if (GameManager.Instance.isCheck == true || this.unitType == UnitType.King)
+            {
+                //체크일 때 처리
+                //targetLine하고 targetCellNum으로 이동할 경우 체크가 회피 되는지 검사
+                if (GameManager.Instance.SimulateCheck(this, targetLine, targetCellNum) == false)//체크회피성공
+                {
+                    GameObject movable = Instantiate(gameObject);
+                    GameManager.Instance.chessBoard.MoveUnit(movable, targetLine, targetCellNum);
+                    Unit script = movable.GetComponent<Unit>();
+                    script.SetPlayer(PlayerType.Movable);
+                }
+            }
+            else
+            {
+                GameObject movable = Instantiate(gameObject);
+                GameManager.Instance.chessBoard.MoveUnit(movable, targetLine, targetCellNum);
+                Unit script = movable.GetComponent<Unit>();
+                script.SetPlayer(PlayerType.Movable);
+            }
         }
         return true;
     }
 
-    public bool IsCheck()
+    public void IsCheck(ref bool result)
     {
+        if(result == true) // 체크된 상태
+        {
+            return;
+        }
+
         List<Unit> killableList = new List<Unit>();
         MakeMovableUnits(killableList);
         if (killableList.Count != 0)
         {
-            Debug.Log($"Player : {playerType} / UnitType : {unitType}[{curLine},{curCellNum}] / killableCount - {killableList.Count}");
-            foreach(Unit killableUnit in killableList)
+            //Debug.Log($"Player : {playerType} / UnitType : {unitType}[{curLine},{curCellNum}] / killableCount - {killableList.Count}");
+            foreach (Unit killableUnit in killableList)
             {
-                Debug.Log($"    {killableUnit.unitType} [{killableUnit.curLine},{killableUnit.curCellNum}]");
+                //Debug.Log($"    {killableUnit.unitType} [{killableUnit.curLine},{killableUnit.curCellNum}]");
+                //result - false    unitType == King. => true
+                // |= <- 이 표현은 bool = bool | bool
+                // &= <- 이 표현은 bool = bool & bool
+                result |= killableUnit.unitType == UnitType.King;
+
+                if(result == true) // 킹이 체크 된 상태
+                {
+                    break;
+                }
             }
         }
-        return false;
     }
 }

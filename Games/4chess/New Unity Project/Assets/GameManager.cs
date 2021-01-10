@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
     
     public ChessBoard chessBoard;
     public Unit.PlayerType currentTurn;
+    public bool isCheck = false;
 
     private void Start()
     {
@@ -176,12 +177,69 @@ public class GameManager : MonoBehaviour
     {
         List<Unit> allyList = (currentTurn == Unit.PlayerType.White ? WhiteUnits : BlackUnits);
 
-        bool isCheck = false;
-        
+        isCheck = false;
+
         foreach(Unit ally in allyList)
         {
-            ally.IsCheck();
-            //isCheck = (내가 상대 킹을 체크했는지);
+            if (ally == null)
+                continue;
+
+            //ref나 out 파라미터는 아규먼트도 ref/out인지 명시해줘야 됩니다.
+            ally.IsCheck(ref isCheck);
+
+            if(isCheck == true)
+            {
+                Debug.Log($"체크되었습니다. {currentTurn}");
+                break;
+            }
         }
+    }
+
+    public bool SimulateCheck(Unit unit,int targetLine,int targetCellNum)
+    {
+        int currentLine = unit.curLine;
+        int currentCellNum = unit.curCellNum;
+        Unit enemyScript = null;
+
+        if (chessBoard.IsInEnemy(targetLine, targetCellNum))
+        {
+            enemyScript = chessBoard.lines[targetLine].cells[targetCellNum].GetComponentInChildren<Unit>();
+            enemyScript.gameObject.SetActive(false);
+        }
+
+
+        chessBoard.MoveUnit(unit.gameObject, targetLine, targetCellNum);
+
+
+        ////체크 검사
+        List<Unit> enemyList = (currentTurn == Unit.PlayerType.White ? BlackUnits : WhiteUnits);
+        currentTurn = (currentTurn == Unit.PlayerType.White ? Unit.PlayerType.Black : Unit.PlayerType.White);
+        bool result = false;
+        foreach (Unit enemy in enemyList)
+        {
+            if (enemy == null || enemy.gameObject.activeSelf == false)
+            {
+                continue;
+            }
+
+            //ref나 out 파라미터는 아규먼트도 ref/out인지 명시해줘야 됩니다.
+            enemy.IsCheck(ref result);
+
+            if (result == true)
+            {
+                Debug.Log($"체크되는 상황이라 움직일 수 없습니다. {currentTurn}");
+                break;
+            }
+        }
+
+        chessBoard.MoveUnit(unit.gameObject, currentLine, currentCellNum);
+        unit.curLine = currentLine;
+        unit.curCellNum = currentCellNum;
+        currentTurn = (currentTurn == Unit.PlayerType.White ? Unit.PlayerType.Black : Unit.PlayerType.White);
+        if(enemyScript != null)
+        {
+            enemyScript.gameObject.SetActive(true);
+        }
+        return result;
     }
 }
