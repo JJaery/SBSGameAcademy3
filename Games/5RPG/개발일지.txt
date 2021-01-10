@@ -1,0 +1,75 @@
+RPG게임
+    - 게임 DB 작업
+	- 아이템 시스템
+	- 인벤토리 시스템
+	- 캐릭터 이동 시스템
+	- 피격 시스템 (데미지_ 데미지 공식,체력)
+	- AI 시스템 (밸런스)
+	- 게임 오버
+	- 게임 룰 (로그 RPG게임인지, MO/MMORPG, 싱글 RPG 세이브/로드)
+	로그? 일회성 게임 ex) 아이작, 로그, 던그리드, 언더테일
+	
+모든 게임에서는 DB,DateBase 라는 개념이 들어가요
+
+DB라는 개념은 2가지 의미를 가지고 있습니다.
+
+1. 서버DB, 유저 정보, 서버 정보를 저장하는 개념의 DB
+    ㄴ MySQL, No-SQL , MS-SQL ... SQL 개념으로 저장되는 DB
+2. 게임DB, 게임의 정보들을 가지고 있는 DB
+    ㄴ 자유형식, 데이터 통신 규악을 따릅니다.
+	
+( 클라이언트 <-> 서버 ) 통신 == 패킷 통신
+현재 크게 2가지 유형의 통신으로 나뉩니다.
+옛날에는 패킷이 가지각색이고 회사마다 규약이 달랐습니다.
+최근에는 크게 JSON, XML 통신으로 나뉩니다.
+
+Json - (Key-Value Pair)형태로 통신하는 형태
+{ a:1 b:2 c:"스트링" }
+JsonParser 라는 얘로 Parsing을 해서 데이터화 시킵니다.
+  Data value = JsonConvert.DeSerializing<Data>(jsonStr);
+public class Data
+{
+   public string a;
+   public string b;
+   public string c;
+}
+
+
+XML - Document 형태.
+Node 개념이 들어가는데, 
+Root -> Node -> Element(Data/Key-Value Pair)
+XMLParser가 서버에서 준 XML 데이터를 통해
+C# class 데이터로 변환해준다.
+
+성능 : Json > XML;
+데이터 구조 : XML > Json;
+안정성 : XML >= Json; (하기 나름)
+
+Json으로 데이터를 구성하고 로드하는 방식부터 배우고
+아이템 시스템을 작업 진행
+
+
+---- 1. 게임 DB 작업 ----
+ 아이템 DB작업!
+보통 엑셀로 작업을 하고 엑셀을 Json이나 XML으로 변환하는 작업을 진행합니다.
+ItemDB를 구글 스프레드 시트에서 작성하고
+Json형태로 Export(내보내기)하여 유니티 프로젝트에 옮김.
+그리고 스크립트에서 TextAsset이라는 형태로 해당 Json String을 가져옴
+
+JsonString -> Data 로 변환해줘야 되는데,
+JsonParser는 유니티 내장되어있습니다.
+근데 기능이 미비합니다. (Dictionary 형태를 지원하지 않습니다.)
+그래서 Json을 파싱하는 라이브러리를 Unity AssetStore에서 받아야됩니다.
+XML은 MS가 공식적으로 지원해줘서 C# 내장 지원입니다.
+
+작업한 구글스프레드시트 데이터를 ItemDB형태로 변경 완료,
+
+----2.Inventory System----
+  필요한 데이터 : 
+  소유중인 ItemData 리스트, 인벤토리 공간, 아이템 스택(아이템 갯수)
+ 
+ 
+구조상 UI 가 시스템에 관여하면 안됩니다.
+UI는 시스템(매니저)에 있는 데이터들을 표시하는 역할만 해줘야됩니다.
+표시하는 역할을 하는 스크립트, UI스크립트를 작성하고
+매니저 스크립트를 별도로 작성해야 합니다.

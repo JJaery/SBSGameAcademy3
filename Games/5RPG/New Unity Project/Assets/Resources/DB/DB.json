@@ -1,0 +1,17 @@
+{
+  "ItemDB": 
+  {
+    "1": {
+      "NAME": "빨간포션",
+      "ICON": "Resources/Icon/RedPotion"
+    },
+    "2": {
+      "NAME": "파란포션",
+      "ICON": "Resources/Icon/BluePotion"
+    },
+    "3": {
+      "NAME": "사과",
+      "ICON": "Resources/Icon/Apple"
+    }
+  }
+}
