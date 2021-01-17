@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
+    public float HP = 100;
     public float moveSpeed = 10;
 
     // Start is called before the first frame update

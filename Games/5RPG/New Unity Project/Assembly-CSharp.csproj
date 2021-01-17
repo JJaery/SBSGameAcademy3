@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\Character\Character.cs" />
     <Compile Include="Assets\Scripts\Character\Monster.cs" />
     <Compile Include="Assets\Scripts\AnimationEventListener.cs" />
+    <Compile Include="Assets\Scripts\UI\HPBar.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\JsonDotNet\link.xml" />
