@@ -6,9 +6,30 @@ public class Player : Character
 {
     public Rigidbody rigidBody;
     public Animator animator;
+    public AnimationEventListener animaitionListener;
+
+    private void Awake()
+    {
+        animaitionListener.onAnimationEvent += OnAnimationEvent;
+    }
+    private void OnDestroy()
+    {
+        animaitionListener.onAnimationEvent -= OnAnimationEvent;
+    }
+
+    private void OnAnimationEvent(string eventName)
+    {
+        Debug.Log(eventName);
+    }
 
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            Attack();
+            return;
+        }
+
         Vector3 dir = Vector3.zero;
         if(Input.GetKey(KeyCode.W) == true) // 방향이 0도
         {
@@ -26,7 +47,6 @@ public class Player : Character
         {
             dir += Vector3.back;
         }
-
         ///이동
         if (dir != Vector3.zero)
         {
@@ -39,4 +59,16 @@ public class Player : Character
             animator.SetBool("isMoving", false);
         }
     }
+
+    private void MeleeAttackStart()
+    {
+        Debug.Log("!!");
+    }
+
+    private void Attack()
+    {
+        animator.SetTrigger("onAttack");
+    }
+
+
 }
