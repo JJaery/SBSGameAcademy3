@@ -4,19 +4,30 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
+    public Animator animator;
     public float HP = 100;
     public float MaxHP = 100;
     public float moveSpeed = 10;
+    private float Damage = 5;
 
-    // Start is called before the first frame update
-    void Start()
+    protected void Hit(Character target)
     {
-        
+        Debug.Log($"{gameObject.name} Attack! -> {target.gameObject.name}");
+        target.Hitted(this);
     }
 
-    // Update is called once per frame
-    void Update()
+    protected void Hitted(Character hitter)
     {
-        
+        Debug.Log($"{gameObject.name} Hitted by {hitter.gameObject.name}");
+        float curHp = HP;
+
+        //계산
+        this.HP -= hitter.Damage;
+        //
+
+        float realDmg = curHp - this.HP;
+
+        animator.SetTrigger("onHitted");
+        UIManager.Instance.MakeDamageUI(this.transform, realDmg);
     }
 }
